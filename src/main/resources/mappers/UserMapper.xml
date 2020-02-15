@@ -151,4 +151,16 @@
       update_time = now()
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="checkUserName" parameterType="string" resultType="int">
+    select count(1) from dmall_user where username = #{username}
+  </select>
+
+  <!--不要查所有，只查自己需要的-->
+  <select id="selectLogin" parameterType="map"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"></include>
+    from dmall_user
+    where username = #{username} and password = #{password}
+  </select>
 </mapper>

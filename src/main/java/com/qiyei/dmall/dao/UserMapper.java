@@ -1,6 +1,7 @@
 package com.qiyei.dmall.dao;
 
 import com.qiyei.dmall.pojo.User;
+import org.apache.ibatis.annotations.Param;
 
 public interface UserMapper {
     int deleteByPrimaryKey(Integer id);
@@ -14,4 +15,14 @@ public interface UserMapper {
     int updateByPrimaryKeySelective(User record);
 
     int updateByPrimaryKey(User record);
+
+    int checkUserName(String username);
+
+    /**
+     * xml中引用需要和注解中的值相同
+     * @param username
+     * @param password
+     * @return
+     */
+    User selectLogin(@Param("username") String username, @Param("password")String password);
 }

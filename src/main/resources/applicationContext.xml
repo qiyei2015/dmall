@@ -9,6 +9,7 @@
      http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
      http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
 
+    <!--使用component-scan来进行bean的加载-->
     <context:component-scan base-package="com.qiyei.dmall" annotation-config="true"/>
 
     <!--<context:annotation-config/>-->
