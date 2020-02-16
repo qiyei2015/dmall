@@ -47,4 +47,28 @@ public class UserController {
         return response;
     }
 
+    @RequestMapping(value = "logout.do",method = RequestMethod.POST)
+    @ResponseBody
+    public Response<String> logout(String username, String password, HttpSession session){
+        //调用service
+        session.removeAttribute(Constant.CURRENT_USER);
+        Response<String> response = Response.createBySuccessMessage("退出登录成功");
+        return response;
+    }
+
+    @RequestMapping(value = "register.do",method = RequestMethod.POST)
+    @ResponseBody
+    public Response<String> register(User user){
+        //调用service
+        Response<String> response = iUserService.register(user);
+        return response;
+    }
+
+    @RequestMapping(value = "check_valid.do",method = RequestMethod.POST)
+    @ResponseBody
+    public Response<String> checkValid(String type,String value){
+        //调用service
+        Response<String> response = iUserService.checkValid(type,value);
+        return response;
+    }
 }

@@ -16,7 +16,9 @@ public interface UserMapper {
 
     int updateByPrimaryKey(User record);
 
-    int checkUserName(String username);
+    int checkUsername(String username);
+
+    int checkEmail(String email);
 
     /**
      * xml中引用需要和注解中的值相同

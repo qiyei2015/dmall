@@ -19,4 +19,18 @@ public interface IUserService {
      */
     Response<User> login(String name, String password);
 
+    /**
+     * 注册
+     * @param user
+     * @return
+     */
+    Response<String> register(User user);
+
+    /**
+     * 校验
+     * @param type
+     * @param value
+     * @return
+     */
+    Response<String> checkValid(String type,String value);
 }

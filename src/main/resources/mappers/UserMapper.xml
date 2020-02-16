@@ -152,8 +152,12 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
 
-  <select id="checkUserName" parameterType="string" resultType="int">
+  <select id="checkUsername" parameterType="string" resultType="int">
     select count(1) from dmall_user where username = #{username}
+  </select>
+
+  <select id="checkEmail" parameterType="string" resultType="int">
+    select count(1) from dmall_user where email = #{email}
   </select>
 
   <!--不要查所有，只查自己需要的-->
