@@ -2,6 +2,7 @@ package com.qiyei.dmall.controller.portal;
 
 import com.qiyei.dmall.common.Constant;
 import com.qiyei.dmall.common.Response;
+import com.qiyei.dmall.common.ResponseCode;
 import com.qiyei.dmall.pojo.User;
 import com.qiyei.dmall.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,4 +72,88 @@ public class UserController {
         Response<String> response = iUserService.checkValid(type,value);
         return response;
     }
+
+    @RequestMapping(value = "get_user_info.do",method = RequestMethod.POST)
+    @ResponseBody
+    public Response<User> getUserInfo(HttpSession session){
+        User user = (User) session.getAttribute(Constant.CURRENT_USER);
+        if (user == null){
+            return Response.createByErrorMessage("用户未登录,无法获取当前用户的信息");
+        }
+        return Response.createBySuccess(user);
+    }
+
+    @RequestMapping(value = "get_password_question.do",method = RequestMethod.POST)
+    @ResponseBody
+    public Response<String> getPasswordQuestion(String username){
+        return iUserService.queryQuestion(username);
+    }
+
+    @RequestMapping(value = "check_password_answer.do",method = RequestMethod.POST)
+    @ResponseBody
+    public Response<String> checkPasswordAnswer(String username,String password,String answer){
+        return iUserService.checkPasswordAnswer(username,password,answer);
+    }
+
+    /**
+     * 登陆中重置密码
+     * @param session
+     * @param passwordOld
+     * @param passwordNew
+     * @return
+     */
+    @RequestMapping(value = "reset_password.do",method = RequestMethod.POST)
+    @ResponseBody
+    public Response<String> resetPassword(HttpSession session,String passwordOld,String passwordNew){
+        User user = (User)session.getAttribute(Constant.CURRENT_USER);
+        if(user == null){
+            return Response.createByErrorMessage("用户未登录");
+        }
+        return iUserService.resetPassword(user,passwordOld,passwordNew);
+    }
+
+    /**
+     * 忘记密码重置
+     * @param username
+     * @param passwordNew
+     * @param forgetToken
+     * @return
+     */
+    @RequestMapping(value = "forget_reset_password.do",method = RequestMethod.POST)
+    @ResponseBody
+    public Response<String> forgetResetPassword(String username,String passwordNew,String forgetToken){
+        return iUserService.forgetResetPassword(username,passwordNew,forgetToken);
+    }
+
+    @RequestMapping(value = "update_user_info.do",method = RequestMethod.POST)
+    @ResponseBody
+    public Response<User> updateUserInfo(HttpSession session,User user){
+        //登录状态下
+        User currentUser = (User)session.getAttribute(Constant.CURRENT_USER);
+        if(currentUser == null){
+            return Response.createByErrorMessage("用户未登录");
+        }
+
+        user.setId(currentUser.getId());
+        user.setUsername(currentUser.getUsername());
+        Response<User> response = iUserService.updateUserInfo(user);
+        if(response.isSuccess()){
+            response.getData().setUsername(currentUser.getUsername());
+            session.setAttribute(Constant.CURRENT_USER,response.getData());
+        }
+        return response;
+    }
+
+    @RequestMapping(value = "get_user_info_with_login.do",method = RequestMethod.POST)
+    @ResponseBody
+    public Response<User> getUserInfoWithLogin(HttpSession session){
+        //登录状态下
+        User currentUser = (User)session.getAttribute(Constant.CURRENT_USER);
+        if(currentUser == null){
+            return Response.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),"用户未登录,请登录");
+        }
+        return iUserService.getUserInfo(currentUser.getId());
+    }
+
+
 }

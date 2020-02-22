@@ -167,4 +167,41 @@
     from dmall_user
     where username = #{username} and password = #{password}
   </select>
+
+  <select id="queryQuestionByName" parameterType="string"  resultType="string">
+    select
+        question
+    from dmall_user
+    where username = #{username}
+  </select>
+
+  <select id="checkPasswordAnswer" parameterType="string"  resultType="int">
+    select
+        count (1)
+    from dmall_user
+    where username = #{username} and password = #{password} and answer = #{answer}
+  </select>
+
+  <select id="checkPassword" parameterType="map"  resultType="int">
+    select
+        count (1)
+    from dmall_user
+    where id = #{id} and password = #{password}
+  </select>
+
+  <update id="updatePasswordByUsername" parameterType="map" >
+    update dmall_user
+
+    set password = #{password},update_time = now()
+
+    where username = #{username}
+  </update>
+
+  <select id="checkEmailByUserId" parameterType="map"  resultType="int">
+    select
+        count (1)
+    from dmall_user
+    where id = #{id} and email = #{email}
+  </select>
+
 </mapper>
