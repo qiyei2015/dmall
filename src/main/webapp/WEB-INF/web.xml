@@ -32,7 +32,7 @@
     <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
   </listener>
 
-  <!--配置listener加载applicationContext-->
+  <!--配置listener监听器 加载applicationContext-->
   <listener>
     <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
   </listener>
